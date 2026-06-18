@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Canada Severance Pay Calculator 2026 | Know Your Rights</title>
+  <meta name="description" content="Free Canadian severance pay calculator. Find out what you're entitled to under the ESA and common law when terminated without cause. Compare what courts actually award vs. what your employer offers." />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container">
+      <div class="logo">
+        <span class="logo-icon">⚖️</span>
+        <span class="logo-text">SeveranceCalc.ca</span>
+      </div>
+      <p class="header-tagline">Know what you're owed before signing anything.</p>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+
+      <!-- Hero -->
+      <section class="hero">
+        <h1>Canada Severance Pay Calculator</h1>
+        <p>Terminated without cause? Find out if your employer's offer is fair — in under 60 seconds.</p>
+      </section>
+
+      <!-- Calculator Card -->
+      <div class="card calculator-card">
+        <h2 class="card-title">Your Information</h2>
+        <form id="calcForm" novalidate>
+
+          <div class="form-grid">
+
+            <!-- Province -->
+            <div class="field full-width">
+              <label for="province">Province / Territory <span class="required">*</span></label>
+              <select id="province" required>
+                <option value="">Select your province...</option>
+                <optgroup label="Most Common">
+                  <option value="ontario">Ontario</option>
+                  <option value="bc">British Columbia</option>
+                  <option value="alberta">Alberta</option>
+                  <option value="quebec">Quebec</option>
+                </optgroup>
+                <optgroup label="Other Provinces">
+                  <option value="manitoba">Manitoba</option>
+                  <option value="saskatchewan">Saskatchewan</option>
+                  <option value="nova_scotia">Nova Scotia</option>
+                  <option value="new_brunswick">New Brunswick</option>
+                  <option value="pei">Prince Edward Island</option>
+                  <option value="newfoundland">Newfoundland &amp; Labrador</option>
+                </optgroup>
+                <optgroup label="Federal">
+                  <option value="federal">Federal Employee (banks, airlines, telecoms…)</option>
+                </optgroup>
+              </select>
+            </div>
+
+            <!-- Years of Service -->
+            <div class="field">
+              <label for="years">Years of Service <span class="required">*</span></label>
+              <div class="input-suffix">
+                <input type="number" id="years" min="0.1" max="50" step="0.5" placeholder="e.g. 5.5" required />
+                <span>years</span>
+              </div>
+              <div class="field-hint">Use decimals for partial years (e.g. 3.5 = 3 years 6 months)</div>
+            </div>
+
+            <!-- Age -->
+            <div class="field">
+              <label for="age">Your Age <span class="required">*</span></label>
+              <div class="input-suffix">
+                <input type="number" id="age" min="18" max="80" placeholder="e.g. 42" required />
+                <span>years old</span>
+              </div>
+            </div>
+
+          </div><!-- /form-grid -->
+
+          <!-- Position Level -->
+          <div class="field full-width" style="margin-bottom: 20px;">
+            <label>Position Level <span class="required">*</span></label>
+            <div class="position-grid">
+
+              <label class="position-card">
+                <input type="radio" name="position" value="entry" />
+                <div class="position-card-inner">
+                  <div class="position-icon">🔧</div>
+                  <div class="position-name">Entry-level / Operational</div>
+                  <div class="position-examples">Operator, technician, warehouse, assistant, cashier</div>
+                </div>
+              </label>
+
+              <label class="position-card">
+                <input type="radio" name="position" value="professional" />
+                <div class="position-card-inner">
+                  <div class="position-icon">💼</div>
+                  <div class="position-name">Professional / Analyst</div>
+                  <div class="position-examples">Engineer, analyst, designer, coordinator, supervisor</div>
+                </div>
+              </label>
+
+              <label class="position-card">
+                <input type="radio" name="position" value="manager" />
+                <div class="position-card-inner">
+                  <div class="position-icon">📋</div>
+                  <div class="position-name">Manager</div>
+                  <div class="position-examples">Project, sales, regional, product, operations manager</div>
+                </div>
+              </label>
+
+              <label class="position-card">
+                <input type="radio" name="position" value="executive" />
+                <div class="position-card-inner">
+                  <div class="position-icon">🏆</div>
+                  <div class="position-name">Executive / Director</div>
+                  <div class="position-examples">CEO, CFO, COO, VP, Director, Head of, Controller</div>
+                </div>
+              </label>
+
+            </div>
+          </div>
+
+          <!-- Salary -->
+          <div class="field full-width">
+            <label for="salary">Annual Salary (CAD) <span class="required">*</span></label>
+            <div class="input-prefix">
+              <span>$</span>
+              <input type="number" id="salary" min="1000" max="10000000" step="1000" placeholder="85,000" required />
+            </div>
+            <div class="field-hint">Use your gross annual salary before taxes</div>
+          </div>
+
+          <div id="formError" class="form-error hidden"></div>
+
+          <button type="submit" class="btn-calculate">Calculate My Severance →</button>
+
+        </form>
+      </div><!-- /calculator-card -->
+
+      <!-- ── RESULTS ──────────────────────────────────────────────────── -->
+      <div id="results" class="hidden">
+
+        <!-- ESA Card -->
+        <div class="card result-card esa-card">
+          <div class="result-card-header">
+            <div class="result-card-icon">📋</div>
+            <div>
+              <h2>ESA Minimum</h2>
+              <p class="result-card-subtitle">What your employer is legally required to pay</p>
+            </div>
+          </div>
+          <div id="esaContent"></div>
+        </div>
+
+        <!-- Common Law Card -->
+        <div class="card result-card cl-card">
+          <div class="result-card-header">
+            <div class="result-card-icon">⚖️</div>
+            <div>
+              <h2>Common Law Estimate</h2>
+              <p class="result-card-subtitle">What Canadian courts typically award — based on Bardal factors</p>
+            </div>
+          </div>
+          <div id="clContent"></div>
+        </div>
+
+        <!-- Gap Card -->
+        <div class="card result-card gap-card">
+          <div class="result-card-header">
+            <div class="result-card-icon">💰</div>
+            <div>
+              <h2>Potential Gap</h2>
+              <p class="result-card-subtitle">The difference between what you may be offered and what you can negotiate</p>
+            </div>
+          </div>
+          <div id="gapContent"></div>
+
+          <div class="cta-box">
+            <p class="cta-text">Most employees sign without negotiating. An employment lawyer consultation is usually <strong>free</strong> — and they typically work on contingency.</p>
+            <a href="https://www.google.com/search?q=employment+lawyer+free+consultation+wrongful+dismissal+canada"
+               target="_blank" rel="noopener noreferrer" class="btn-cta">
+              Find an Employment Lawyer — Free Consultation →
+            </a>
+          </div>
+        </div>
+
+        <!-- Disclaimer -->
+        <div class="disclaimer">
+          <strong>⚠️ Disclaimer:</strong> This calculator provides educational estimates based on Canadian case law
+          (Bardal factors). It is <strong>not legal advice</strong> and does not account for all factors a court would
+          consider — including your employment contract, industry, or specific circumstances. Do not sign any
+          termination agreement without first consulting a qualified employment lawyer.
+        </div>
+
+        <button id="recalcBtn" class="btn-recalc">← Recalculate</button>
+
+      </div><!-- /results -->
+
+      <!-- ── INFO SECTION ─────────────────────────────────────────────── -->
+      <section class="info-section">
+        <h2>Understanding Your Rights</h2>
+        <div class="info-grid">
+          <div class="info-card">
+            <h3>What is ESA Minimum?</h3>
+            <p>The Employment Standards Act sets the <strong>legal floor</strong> for termination pay in each
+            province. Your employer must pay at least this — but it is usually a small fraction of what you
+            are entitled to under common law.</p>
+          </div>
+          <div class="info-card">
+            <h3>What is Common Law?</h3>
+            <p>Canadian courts use the <strong>Bardal factors</strong> (age, length of service, position,
+            job availability) to determine "reasonable notice." This is typically far higher than the ESA
+            minimum, and is what you can negotiate or pursue in court.</p>
+          </div>
+          <div class="info-card">
+            <h3>Should I sign immediately?</h3>
+            <p><strong>No.</strong> Most packages have a deadline, but you almost always have time to
+            consult a lawyer. Many employment lawyers offer free initial consultations and work on
+            contingency — meaning no upfront cost.</p>
+          </div>
+          <div class="info-card">
+            <h3>What are Bardal Factors?</h3>
+            <p>From the landmark 1960 case <em>Bardal v. Globe &amp; Mail</em>: courts weigh your
+            <strong>age, years of service, position level, and availability of comparable work</strong>
+            to determine the appropriate notice period.</p>
+          </div>
+        </div>
+      </section>
+
+    </div><!-- /container -->
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>This tool is for educational purposes only and does not constitute legal advice. Always consult a
+      qualified employment lawyer before making decisions about your severance package.</p>
+      <p class="footer-links">
+        <a href="#">Privacy Policy</a> &middot;
+        <a href="#">Terms of Use</a>
+      </p>
+    </div>
+  </footer>
+
+  <script src="js/data/esa.js"></script>
+  <script src="js/data/commonlaw.js"></script>
+  <script src="js/calculator.js"></script>
+
+</body>
+</html>
