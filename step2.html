@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Select Province | SeveranceCalc.ca</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="logo">
+        <span class="logo-text">SeveranceCalc<span class="logo-dot">.ca</span></span>
+      </a>
+      <a href="https://www.google.com/search?q=employment+lawyer+free+consultation+wrongful+dismissal+canada"
+         target="_blank" rel="noopener" class="btn-header-cta">Find a Lawyer</a>
+    </div>
+  </header>
+
+  <main class="step-main">
+    <div class="step-wrapper">
+
+      <div class="step-progress">
+        <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+        <div class="progress-label" id="progressLabel"></div>
+      </div>
+
+      <div class="step-content">
+        <h2 class="step-title">Select your province or territory</h2>
+        <p class="step-sub">Employment standards vary by province. Select where you worked.</p>
+
+        <div class="select-wrapper">
+          <select id="province" class="step-select">
+            <option value="">Select your province...</option>
+            <optgroup label="Most Common">
+              <option value="ontario">Ontario</option>
+              <option value="bc">British Columbia</option>
+              <option value="alberta">Alberta</option>
+              <option value="quebec">Quebec</option>
+            </optgroup>
+            <optgroup label="Other Provinces">
+              <option value="manitoba">Manitoba</option>
+              <option value="saskatchewan">Saskatchewan</option>
+              <option value="nova_scotia">Nova Scotia</option>
+              <option value="new_brunswick">New Brunswick</option>
+              <option value="pei">Prince Edward Island</option>
+              <option value="newfoundland">Newfoundland &amp; Labrador</option>
+            </optgroup>
+            <optgroup label="Federal">
+              <option value="federal">Federal Employee (banks, airlines, telecoms...)</option>
+            </optgroup>
+          </select>
+        </div>
+      </div>
+
+      <div class="step-nav">
+        <a href="step1.html" class="btn-back">Back</a>
+        <button id="nextBtn" class="btn-next">Continue</button>
+      </div>
+
+      <div id="stepError" class="step-error hidden"></div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-logo">SeveranceCalc.ca</div>
+      <p class="footer-disclaimer">For educational purposes only. Not legal advice.</p>
+    </div>
+  </footer>
+
+  <script src="js/wizard.js"></script>
+  <script>
+    if (getState('terminated') !== 'yes') goToPage(1);
+
+    setProgress(2);
+
+    const select = document.getElementById('province');
+    const saved  = getState('province');
+    if (saved) select.value = saved;
+
+    document.getElementById('nextBtn').addEventListener('click', () => {
+      const val = select.value;
+      if (!val) {
+        const err = document.getElementById('stepError');
+        err.textContent = 'Please select your province or territory.';
+        err.classList.remove('hidden');
+        return;
+      }
+      setState('province', val);
+      goToPage(3);
+    });
+  </script>
+</body>
+</html>

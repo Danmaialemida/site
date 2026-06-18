@@ -252,10 +252,9 @@ input::-webkit-inner-spin-button { -webkit-appearance: none; }
 .position-name    { font-weight: 700; font-size: 0.875rem; color: var(--navy); margin-bottom: 6px; }
 .position-examples{ font-size: 0.75rem; color: var(--muted); line-height: 1.4; }
 
-/* ── Calculate Button ── */
+/* ── Calculate Button (works as <button> or <a>) ── */
 .btn-calculate {
-  display: block;
-  width: 100%;
+  display: inline-block;
   background: var(--gold);
   color: #1c1917;
   border: none;
@@ -431,6 +430,7 @@ input::-webkit-inner-spin-button { -webkit-appearance: none; }
   margin-bottom: 16px;
 }
 .btn-recalc {
+  display: inline-block;
   background: none;
   border: 1.5px solid var(--border);
   color: var(--muted);
@@ -438,6 +438,7 @@ input::-webkit-inner-spin-button { -webkit-appearance: none; }
   border-radius: 8px;
   cursor: pointer;
   font-size: 0.875rem;
+  text-decoration: none;
   transition: all .15s;
 }
 .btn-recalc:hover { border-color: var(--navy); color: var(--navy); }
@@ -497,7 +498,57 @@ input::-webkit-inner-spin-button { -webkit-appearance: none; }
 .footer-links a:hover { text-decoration: underline; }
 
 /* ════════════════════════════════════════════════════════════════════════
-   WIZARD
+   STEP PAGES (multi-page wizard)
+════════════════════════════════════════════════════════════════════════ */
+.step-main {
+  background: var(--bg);
+  min-height: calc(100vh - 58px);
+  padding: 48px 0 72px;
+}
+.step-wrapper {
+  max-width: 660px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+.step-progress { margin-bottom: 36px; }
+.step-content  { animation: fadeIn .25s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ── btn-gold variant ── */
+.btn-gold { background: var(--gold) !important; color: #1c1917 !important; }
+.btn-gold:hover { background: var(--gold-hover) !important; }
+
+/* ════════════════════════════════════════════════════════════════════════
+   EXPLAINER SECTION (home page)
+════════════════════════════════════════════════════════════════════════ */
+.explainer-section { background: var(--bg); padding: 72px 0; }
+.explainer-section .section-title { color: var(--navy); }
+.explainer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+.explainer-card {
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px 28px;
+}
+.explainer-label {
+  font-size: 0.72rem; font-weight: 800; letter-spacing: .1em;
+  text-transform: uppercase; margin-bottom: 8px;
+}
+.explainer-esa .explainer-label { color: var(--slate); }
+.explainer-cl  .explainer-label { color: var(--green); }
+.explainer-card h3 { font-size: 1.1rem; font-weight: 800; color: var(--navy); margin-bottom: 14px; }
+.explainer-card p  { font-size: 0.875rem; color: var(--muted); line-height: 1.7; margin-bottom: 10px; }
+.explainer-card p:last-child { margin-bottom: 0; }
+
+/* ════════════════════════════════════════════════════════════════════════
+   CTA STRIP (home page)
+════════════════════════════════════════════════════════════════════════ */
+.cta-strip { background: var(--navy); padding: 64px 0; text-align: center; }
+.cta-strip h2 { color: white; font-size: 1.75rem; font-weight: 800; margin-bottom: 10px; }
+.cta-strip p  { color: #94a3b8; font-size: 0.95rem; margin-bottom: 28px; }
+
+/* ════════════════════════════════════════════════════════════════════════
+   WIZARD (single-page leftover — kept for compatibility)
 ════════════════════════════════════════════════════════════════════════ */
 .wizard-section { background: var(--white); padding: 48px 0 64px; border-bottom: 1px solid var(--border); }
 
@@ -635,6 +686,7 @@ input::-webkit-inner-spin-button { -webkit-appearance: none; }
 
 /* Mobile landscape / small tablet (≤ 768px) */
 @media (max-width: 768px) {
+  .explainer-grid { grid-template-columns: 1fr; }
   .hero          { padding: 48px 0 40px; }
   .hero h1       { font-size: 1.9rem; }
   .hero p        { font-size: 0.95rem; }

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Type of Job | SeveranceCalc.ca</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="logo">
+        <span class="logo-text">SeveranceCalc<span class="logo-dot">.ca</span></span>
+      </a>
+      <a href="https://www.google.com/search?q=employment+lawyer+free+consultation+wrongful+dismissal+canada"
+         target="_blank" rel="noopener" class="btn-header-cta">Find a Lawyer</a>
+    </div>
+  </header>
+
+  <main class="step-main">
+    <div class="step-wrapper">
+
+      <div class="step-progress">
+        <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+        <div class="progress-label" id="progressLabel"></div>
+      </div>
+
+      <div class="step-content">
+        <h2 class="step-title">Select type of job</h2>
+        <p class="step-sub">Position level is a key factor in calculating common law notice.</p>
+
+        <div class="option-grid cols-2">
+          <label class="option-card"><input type="radio" name="jobType" value="executive"    /><div class="option-inner"><div class="option-label">Executive / Senior Management</div><div class="option-desc">CEO, CFO, COO, VP, Director, Head of</div></div></label>
+          <label class="option-card"><input type="radio" name="jobType" value="manager"      /><div class="option-inner"><div class="option-label">Middle Manager</div><div class="option-desc">Regional, operations, product, project manager</div></div></label>
+          <label class="option-card"><input type="radio" name="jobType" value="professional" /><div class="option-inner"><div class="option-label">Supervisor</div><div class="option-desc">Team lead, shift supervisor, coordinator</div></div></label>
+          <label class="option-card"><input type="radio" name="jobType" value="professional" /><div class="option-inner"><div class="option-label">Professional</div><div class="option-desc">Engineer, analyst, accountant, designer</div></div></label>
+          <label class="option-card"><input type="radio" name="jobType" value="professional" /><div class="option-inner"><div class="option-label">Sales</div><div class="option-desc">Sales representative, account executive, BDR</div></div></label>
+          <label class="option-card"><input type="radio" name="jobType" value="professional" /><div class="option-inner"><div class="option-label">Technical</div><div class="option-desc">IT specialist, technician, developer, support</div></div></label>
+          <label class="option-card"><input type="radio" name="jobType" value="entry"        /><div class="option-inner"><div class="option-label">Labour / Clerical</div><div class="option-desc">Warehouse, operator, cashier, clerk, assistant</div></div></label>
+          <label class="option-card"><input type="radio" name="jobType" value="entry"        /><div class="option-inner"><div class="option-label">Other</div><div class="option-desc">Does not fit the categories above</div></div></label>
+        </div>
+      </div>
+
+      <div class="step-nav">
+        <a href="step4.html" class="btn-back">Back</a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-logo">SeveranceCalc.ca</div>
+      <p class="footer-disclaimer">For educational purposes only. Not legal advice.</p>
+    </div>
+  </footer>
+
+  <script src="js/wizard.js"></script>
+  <script>
+    if (!getState('ageRange')) goToPage(4);
+    setProgress(5);
+    restoreRadio('jobType', 'jobType');
+    bindAutoAdvance('jobType', 'jobType', 6);
+  </script>
+</body>
+</html>

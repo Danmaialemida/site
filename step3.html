@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Length of Employment | SeveranceCalc.ca</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="logo">
+        <span class="logo-text">SeveranceCalc<span class="logo-dot">.ca</span></span>
+      </a>
+      <a href="https://www.google.com/search?q=employment+lawyer+free+consultation+wrongful+dismissal+canada"
+         target="_blank" rel="noopener" class="btn-header-cta">Find a Lawyer</a>
+    </div>
+  </header>
+
+  <main class="step-main">
+    <div class="step-wrapper">
+
+      <div class="step-progress">
+        <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+        <div class="progress-label" id="progressLabel"></div>
+      </div>
+
+      <div class="step-content">
+        <h2 class="step-title">Select length of employment</h2>
+        <p class="step-sub">How long were you employed at the company?</p>
+
+        <div class="option-grid cols-2">
+          <label class="option-card"><input type="radio" name="yearsRange" value="0.5"  /><div class="option-inner"><div class="option-label">Less than 1 year</div></div></label>
+          <label class="option-card"><input type="radio" name="yearsRange" value="2"    /><div class="option-inner"><div class="option-label">1 – 3 years</div></div></label>
+          <label class="option-card"><input type="radio" name="yearsRange" value="5.5"  /><div class="option-inner"><div class="option-label">4 – 7 years</div></div></label>
+          <label class="option-card"><input type="radio" name="yearsRange" value="9.5"  /><div class="option-inner"><div class="option-label">8 – 11 years</div></div></label>
+          <label class="option-card"><input type="radio" name="yearsRange" value="13.5" /><div class="option-inner"><div class="option-label">12 – 15 years</div></div></label>
+          <label class="option-card"><input type="radio" name="yearsRange" value="18"   /><div class="option-inner"><div class="option-label">16 – 20 years</div></div></label>
+          <label class="option-card"><input type="radio" name="yearsRange" value="23"   /><div class="option-inner"><div class="option-label">21 – 25 years</div></div></label>
+          <label class="option-card"><input type="radio" name="yearsRange" value="27"   /><div class="option-inner"><div class="option-label">More than 25 years</div></div></label>
+        </div>
+      </div>
+
+      <div class="step-nav">
+        <a href="step2.html" class="btn-back">Back</a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-logo">SeveranceCalc.ca</div>
+      <p class="footer-disclaimer">For educational purposes only. Not legal advice.</p>
+    </div>
+  </footer>
+
+  <script src="js/wizard.js"></script>
+  <script>
+    if (!getState('province')) goToPage(2);
+    setProgress(3);
+    restoreRadio('yearsRange', 'yearsRange');
+    bindAutoAdvance('yearsRange', 'yearsRange', 4);
+  </script>
+</body>
+</html>

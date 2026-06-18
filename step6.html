@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your Salary | SeveranceCalc.ca</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="logo">
+        <span class="logo-text">SeveranceCalc<span class="logo-dot">.ca</span></span>
+      </a>
+      <a href="https://www.google.com/search?q=employment+lawyer+free+consultation+wrongful+dismissal+canada"
+         target="_blank" rel="noopener" class="btn-header-cta">Find a Lawyer</a>
+    </div>
+  </header>
+
+  <main class="step-main">
+    <div class="step-wrapper">
+
+      <div class="step-progress">
+        <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+        <div class="progress-label" id="progressLabel"></div>
+      </div>
+
+      <div class="step-content">
+        <h2 class="step-title">What is your annual salary?</h2>
+        <p class="step-sub">Used to calculate the dollar value of your entitlement (CAD, before taxes).</p>
+
+        <div class="salary-input-wrap">
+          <div class="input-prefix large">
+            <span>$</span>
+            <input type="number" id="salary" min="1000" max="10000000" step="1000" placeholder="85,000" />
+          </div>
+          <div class="field-hint">Gross annual salary</div>
+        </div>
+      </div>
+
+      <div class="step-nav">
+        <a href="step5.html" class="btn-back">Back</a>
+        <button id="nextBtn" class="btn-next">Continue</button>
+      </div>
+
+      <div id="stepError" class="step-error hidden"></div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-logo">SeveranceCalc.ca</div>
+      <p class="footer-disclaimer">For educational purposes only. Not legal advice.</p>
+    </div>
+  </footer>
+
+  <script src="js/wizard.js"></script>
+  <script>
+    if (!getState('jobType')) goToPage(5);
+    setProgress(6);
+
+    const input = document.getElementById('salary');
+    const saved = getState('salary');
+    if (saved) input.value = saved;
+
+    document.getElementById('nextBtn').addEventListener('click', () => {
+      const val = parseFloat(input.value);
+      const err = document.getElementById('stepError');
+      if (!val || val <= 0) {
+        err.textContent = 'Please enter your annual salary.';
+        err.classList.remove('hidden');
+        return;
+      }
+      err.classList.add('hidden');
+      setState('salary', val);
+      goToPage(7); // disclaimer
+    });
+
+    input.addEventListener('keydown', e => {
+      if (e.key === 'Enter') document.getElementById('nextBtn').click();
+    });
+  </script>
+</body>
+</html>

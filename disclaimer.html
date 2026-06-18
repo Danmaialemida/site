@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Disclaimer | SeveranceCalc.ca</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="logo">
+        <span class="logo-text">SeveranceCalc<span class="logo-dot">.ca</span></span>
+      </a>
+      <a href="https://www.google.com/search?q=employment+lawyer+free+consultation+wrongful+dismissal+canada"
+         target="_blank" rel="noopener" class="btn-header-cta">Find a Lawyer</a>
+    </div>
+  </header>
+
+  <main class="step-main">
+    <div class="step-wrapper">
+
+      <div class="step-content">
+        <h2 class="step-title">Before we show your results</h2>
+        <p class="step-sub">Please read and acknowledge the following before proceeding.</p>
+
+        <div class="disclaimer-box">
+          <p>The results provided by this calculator <strong>do not constitute legal advice</strong> and should not be relied upon as such.</p>
+          <p>It is <strong>strongly recommended</strong> that you seek advice from a labour and employment lawyer before signing any termination agreement.</p>
+          <p>There is no guarantee with respect to the range provided. Outcomes vary based on the specific facts of each case.</p>
+        </div>
+
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:28px;">
+          <a href="step6.html" class="btn-back">Back</a>
+          <button id="agreeBtn" class="btn-next btn-gold">I Understand — Show My Results</button>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-logo">SeveranceCalc.ca</div>
+      <p class="footer-disclaimer">For educational purposes only. Not legal advice.</p>
+    </div>
+  </footer>
+
+  <script src="js/wizard.js"></script>
+  <script>
+    if (!getState('salary')) goToPage(6);
+
+    document.getElementById('agreeBtn').addEventListener('click', () => {
+      goToPage(8); // results
+    });
+  </script>
+</body>
+</html>

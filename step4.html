@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Age of Employee | SeveranceCalc.ca</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="logo">
+        <span class="logo-text">SeveranceCalc<span class="logo-dot">.ca</span></span>
+      </a>
+      <a href="https://www.google.com/search?q=employment+lawyer+free+consultation+wrongful+dismissal+canada"
+         target="_blank" rel="noopener" class="btn-header-cta">Find a Lawyer</a>
+    </div>
+  </header>
+
+  <main class="step-main">
+    <div class="step-wrapper">
+
+      <div class="step-progress">
+        <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+        <div class="progress-label" id="progressLabel"></div>
+      </div>
+
+      <div class="step-content">
+        <h2 class="step-title">Select age of employee</h2>
+        <p class="step-sub">Age affects how courts assess re-employment difficulty.</p>
+
+        <div class="option-grid cols-2">
+          <label class="option-card"><input type="radio" name="ageRange" value="20" /><div class="option-inner"><div class="option-label">20 and younger</div></div></label>
+          <label class="option-card"><input type="radio" name="ageRange" value="25" /><div class="option-inner"><div class="option-label">21 – 30</div></div></label>
+          <label class="option-card"><input type="radio" name="ageRange" value="35" /><div class="option-inner"><div class="option-label">31 – 40</div></div></label>
+          <label class="option-card"><input type="radio" name="ageRange" value="45" /><div class="option-inner"><div class="option-label">41 – 50</div></div></label>
+          <label class="option-card"><input type="radio" name="ageRange" value="55" /><div class="option-inner"><div class="option-label">51 – 60</div></div></label>
+          <label class="option-card"><input type="radio" name="ageRange" value="65" /><div class="option-inner"><div class="option-label">61 and older</div></div></label>
+        </div>
+      </div>
+
+      <div class="step-nav">
+        <a href="step3.html" class="btn-back">Back</a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-logo">SeveranceCalc.ca</div>
+      <p class="footer-disclaimer">For educational purposes only. Not legal advice.</p>
+    </div>
+  </footer>
+
+  <script src="js/wizard.js"></script>
+  <script>
+    if (!getState('yearsRange')) goToPage(3);
+    setProgress(4);
+    restoreRadio('ageRange', 'ageRange');
+    bindAutoAdvance('ageRange', 'ageRange', 5);
+  </script>
+</body>
+</html>

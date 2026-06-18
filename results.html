@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your Severance Results | SeveranceCalc.ca</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="logo">
+        <span class="logo-text">SeveranceCalc<span class="logo-dot">.ca</span></span>
+      </a>
+      <a href="https://www.google.com/search?q=employment+lawyer+free+consultation+wrongful+dismissal+canada"
+         target="_blank" rel="noopener" class="btn-header-cta">Find a Lawyer</a>
+    </div>
+  </header>
+
+  <section class="result-section esa-section">
+    <div class="container">
+      <div class="result-section-label">Legal Minimum</div>
+      <h2 class="result-section-title">ESA — What Your Employer Must Pay</h2>
+      <div id="esaContent" class="result-content"></div>
+    </div>
+  </section>
+
+  <section class="result-section cl-section">
+    <div class="container">
+      <div class="result-section-label">Common Law</div>
+      <h2 class="result-section-title">What Courts Typically Award</h2>
+      <div id="clContent" class="result-content"></div>
+    </div>
+  </section>
+
+  <section class="result-section gap-section">
+    <div class="container">
+      <div class="result-section-label">Your Gap</div>
+      <h2 class="result-section-title">What You May Be Leaving on the Table</h2>
+      <div id="gapContent" class="result-content"></div>
+      <div class="cta-box">
+        <p>Most employees sign without negotiating. A free consultation with an employment lawyer costs you nothing.</p>
+        <a href="https://www.google.com/search?q=employment+lawyer+free+consultation+wrongful+dismissal+canada"
+           target="_blank" rel="noopener" class="btn-cta">Get a Free Lawyer Consultation</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="disclaimer-section">
+    <div class="container">
+      <p class="disclaimer-text"><strong>Disclaimer:</strong> This calculator provides educational estimates based on Canadian case law (Bardal factors). It is <strong>not legal advice</strong>. Do not sign any termination agreement without first consulting a qualified employment lawyer.</p>
+      <a href="index.html" class="btn-recalc" id="recalcBtn">Start Over</a>
+    </div>
+  </section>
+
+  <section class="how-section" id="how-it-works">
+    <div class="container">
+      <h2 class="section-title">How It Works</h2>
+      <div class="steps-grid">
+        <div class="step"><div class="step-num">1</div><h3>Answer 6 quick questions</h3><p>Province, employment length, age, job type, and salary.</p></div>
+        <div class="step"><div class="step-num">2</div><h3>See your ESA minimum</h3><p>The legal floor your employer must pay — from provincial legislation.</p></div>
+        <div class="step"><div class="step-num">3</div><h3>See your common law estimate</h3><p>What Canadian courts award based on real cases and Bardal factors.</p></div>
+        <div class="step"><div class="step-num">4</div><h3>Know your gap</h3><p>The difference between what you will be offered and what you can negotiate.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-logo">SeveranceCalc.ca</div>
+      <p class="footer-disclaimer">For educational purposes only. Not legal advice. Always consult a qualified employment lawyer before signing any termination agreement.</p>
+      <p class="footer-links"><a href="#">Privacy Policy</a> &middot; <a href="#">Terms of Use</a></p>
+    </div>
+  </footer>
+
+  <script src="js/data/esa.js"></script>
+  <script src="js/data/commonlaw.js"></script>
+  <script src="js/wizard.js"></script>
+  <script src="js/calculator.js"></script>
+</body>
+</html>

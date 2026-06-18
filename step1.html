@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Have you lost your job? | SeveranceCalc.ca</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="logo">
+        <span class="logo-text">SeveranceCalc<span class="logo-dot">.ca</span></span>
+      </a>
+      <a href="https://www.google.com/search?q=employment+lawyer+free+consultation+wrongful+dismissal+canada"
+         target="_blank" rel="noopener" class="btn-header-cta">Find a Lawyer</a>
+    </div>
+  </header>
+
+  <main class="step-main">
+    <div class="step-wrapper">
+
+      <div class="step-progress">
+        <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+        <div class="progress-label" id="progressLabel"></div>
+      </div>
+
+      <div class="step-content">
+        <h2 class="step-title">Have you lost your job?</h2>
+        <p class="step-sub">This calculator is for employees terminated without cause.</p>
+
+        <div class="option-grid cols-2">
+          <label class="option-card">
+            <input type="radio" name="terminated" value="yes" />
+            <div class="option-inner">
+              <div class="option-label">Yes — I was let go</div>
+              <div class="option-desc">Laid off, restructured, or terminated without cause</div>
+            </div>
+          </label>
+          <label class="option-card">
+            <input type="radio" name="terminated" value="no" />
+            <div class="option-inner">
+              <div class="option-label">No / I am an employer</div>
+              <div class="option-desc">I resigned, or I want to understand employer obligations</div>
+            </div>
+          </label>
+        </div>
+
+        <div class="info-message hidden" id="notTerminatedMsg">
+          <strong>This calculator is designed for employees terminated without cause.</strong><br /><br />
+          If you resigned, common law notice generally does not apply to the employer.
+          If you are an employer, we recommend consulting an employment lawyer to understand your obligations.
+          <br /><br />
+          <a href="https://www.google.com/search?q=employment+lawyer+canada+free+consultation"
+             target="_blank" rel="noopener" class="btn-cta-inline">Find an Employment Lawyer</a>
+        </div>
+      </div>
+
+      <div class="step-nav">
+        <a href="index.html" class="btn-back">Back</a>
+      </div>
+
+      <div id="stepError" class="step-error hidden"></div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-logo">SeveranceCalc.ca</div>
+      <p class="footer-disclaimer">For educational purposes only. Not legal advice.</p>
+    </div>
+  </footer>
+
+  <script src="js/wizard.js"></script>
+  <script>
+    setProgress(1);
+    restoreRadio('terminated', 'terminated');
+
+    document.querySelectorAll('input[name="terminated"]').forEach(radio => {
+      radio.addEventListener('change', function () {
+        setState('terminated', this.value);
+        if (this.value === 'no') {
+          document.getElementById('notTerminatedMsg').classList.remove('hidden');
+        } else {
+          setTimeout(() => goToPage(2), 300);
+        }
+      });
+    });
+  </script>
+</body>
+</html>
