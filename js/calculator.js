@@ -1,124 +1,144 @@
-const form       = document.getElementById('calcForm');
-const resultsEl  = document.getElementById('results');
-const calcCard   = document.querySelector('.calculator-card');
-const formErrEl  = document.getElementById('formError');
+// ── State ───────────────────────────────────────────────────────────────────
+const TOTAL_STEPS = 6;
+let currentStep = 1;
 
-// ── Formatting ─────────────────────────────────────────────────────────────
-function formatCAD(n) {
-  return new Intl.NumberFormat('en-CA', {
-    style: 'currency', currency: 'CAD', maximumFractionDigits: 0,
-  }).format(n);
+// ── DOM refs ────────────────────────────────────────────────────────────────
+const progressFill  = document.getElementById('progressFill');
+const progressLabel = document.getElementById('progressLabel');
+const backBtn       = document.getElementById('backBtn');
+const nextBtn       = document.getElementById('nextBtn');
+const stepNav       = document.getElementById('stepNav');
+const stepError     = document.getElementById('stepError');
+const resultsEl     = document.getElementById('results');
+const wizardSection = document.querySelector('.wizard-section');
+
+// ── Progress ────────────────────────────────────────────────────────────────
+function updateProgress(step) {
+  const pct = ((step - 1) / TOTAL_STEPS) * 100;
+  progressFill.style.width = pct + '%';
+  progressLabel.textContent = `Step ${step} of ${TOTAL_STEPS}`;
 }
 
-function row(label, value) {
-  return `<div class="result-row">
-    <span class="result-label">${label}</span>
-    <span class="result-value">${value}</span>
-  </div>`;
+// ── Show / Hide step panels ─────────────────────────────────────────────────
+function showStep(n) {
+  document.querySelectorAll('.step-panel').forEach(p => p.classList.add('hidden'));
+
+  const isDisclaimer = (n === TOTAL_STEPS + 1);
+  const panelId = isDisclaimer ? 'stepDisclaimer' : `step${n}`;
+  const panel = document.getElementById(panelId);
+  if (panel) panel.classList.remove('hidden');
+
+  // Back button
+  backBtn.classList.toggle('hidden', n <= 1);
+
+  // Next button: hide on auto-next steps and disclaimer
+  const autoNextSteps = [1, 3, 4, 5];
+  const hideNext = autoNextSteps.includes(n) || isDisclaimer;
+  nextBtn.classList.toggle('hidden', hideNext);
+
+  // Hide nav on disclaimer step
+  stepNav.classList.toggle('hidden', isDisclaimer);
+
+  clearError();
+  updateProgress(Math.min(n, TOTAL_STEPS));
+  currentStep = n;
 }
 
-// ── Validation ──────────────────────────────────────────────────────────────
-function validate(province, years, age, salary, position) {
-  if (!province)            return 'Please select your province or territory.';
-  if (!years || years <= 0) return 'Please enter your years of service.';
-  if (!age || age < 18 || age > 80) return 'Please enter a valid age (18–80).';
-  if (!salary || salary <= 0) return 'Please enter your annual salary.';
-  if (!position)            return 'Please select your position level.';
+// ── Validation per step ──────────────────────────────────────────────────────
+function validateStep(n) {
+  switch (n) {
+    case 1: {
+      const v = getRadio('terminated');
+      if (!v) return 'Please select an option.';
+      if (v === 'no') {
+        document.getElementById('notTerminatedMsg').classList.remove('hidden');
+        return 'BLOCK'; // stop navigation
+      }
+      return null;
+    }
+    case 2: {
+      const v = document.getElementById('province').value;
+      if (!v) return 'Please select your province or territory.';
+      return null;
+    }
+    case 3: {
+      if (!getRadio('yearsRange')) return 'Please select your length of employment.';
+      return null;
+    }
+    case 4: {
+      if (!getRadio('ageRange')) return 'Please select your age range.';
+      return null;
+    }
+    case 5: {
+      if (!getRadio('jobType')) return 'Please select your job type.';
+      return null;
+    }
+    case 6: {
+      const s = parseFloat(document.getElementById('salary').value);
+      if (!s || s <= 0) return 'Please enter your annual salary.';
+      return null;
+    }
+  }
   return null;
 }
 
-// ── Render ESA ──────────────────────────────────────────────────────────────
-function renderESA(prov, termWeeks, termAmt, sevWeeks, sevAmt) {
-  const el = document.getElementById('esaContent');
+// ── Next / Back ──────────────────────────────────────────────────────────────
+nextBtn.addEventListener('click', () => advanceStep());
+backBtn.addEventListener('click', () => {
+  if (currentStep > 1) showStep(currentStep - 1);
+});
 
-  if (termWeeks === 0) {
-    el.innerHTML = `<div class="result-note warning">
-      ⚠️ Based on your years of service, you may not yet qualify for termination
-      pay under ${prov.name}'s ESA (minimum service: ${prov.minServiceMonths} months).
-      Common law may still entitle you to notice pay — consult a lawyer.
-    </div>`;
-    return;
+function advanceStep() {
+  const err = validateStep(currentStep);
+  if (err === 'BLOCK') return;
+  if (err) { showError(err); return; }
+
+  if (currentStep < TOTAL_STEPS) {
+    showStep(currentStep + 1);
+  } else {
+    // Last data step → show disclaimer
+    showStep(TOTAL_STEPS + 1);
   }
-
-  let html = row('Province / Act', prov.name);
-  html += row('Termination Pay', `${termWeeks} week${termWeeks !== 1 ? 's' : ''} &nbsp;<strong>${formatCAD(termAmt)}</strong>`);
-
-  if (sevWeeks > 0) {
-    html += row('+ Severance Pay <span class="tag">Ontario</span>', `${sevWeeks} weeks &nbsp;<strong>${formatCAD(sevAmt)}</strong>`);
-  }
-
-  const total = termAmt + sevAmt;
-  html += `<div class="result-row result-total">
-    <span class="result-label">ESA Total</span>
-    <span class="result-value">${formatCAD(total)}</span>
-  </div>`;
-
-  if (prov.severanceNote) {
-    html += `<div class="result-note">* ${prov.severanceNote}</div>`;
-  }
-  if (prov.note) {
-    html += `<div class="result-note">${prov.note}</div>`;
-  }
-
-  el.innerHTML = html;
 }
 
-// ── Render Common Law ───────────────────────────────────────────────────────
-function renderCL(clRange, clMin, clMax) {
-  const el = document.getElementById('clContent');
-  el.innerHTML = `
-    <div class="cl-range">
-      <div class="cl-months">${clRange.min} to ${clRange.max} months notice</div>
-      <div class="cl-value">${formatCAD(clMin)} – ${formatCAD(clMax)}</div>
-    </div>
-    ${row('Lower estimate', `${clRange.min} months &nbsp;<strong>${formatCAD(clMin)}</strong>`)}
-    ${row('Upper estimate', `${clRange.max} months &nbsp;<strong>${formatCAD(clMax)}</strong>`)}
-    <div class="result-note">
-      Based on Bardal factors from Canadian case law. Older employees and those in
-      specialized roles tend toward the upper end. Ontario courts have been awarding
-      significantly higher amounts in recent years (avg. +51% since 2021).
-    </div>`;
-}
+// ── Auto-advance on radio select ─────────────────────────────────────────────
+document.querySelectorAll('.option-card[data-auto-next] input[type="radio"]').forEach(radio => {
+  radio.addEventListener('change', () => {
+    // Visual feedback first, then advance
+    setTimeout(() => {
+      const err = validateStep(currentStep);
+      if (err === 'BLOCK') return;
+      if (!err) advanceStep();
+    }, 280);
+  });
+});
 
-// ── Render Gap ──────────────────────────────────────────────────────────────
-function renderGap(gapMin, gapMax, esaTotal, clMin, clMax) {
-  const el = document.getElementById('gapContent');
+// ── "I Understand" button on disclaimer ──────────────────────────────────────
+document.getElementById('agreeBtn').addEventListener('click', () => {
+  calculate();
+});
 
-  if (gapMax <= 0) {
-    el.innerHTML = `<div class="result-note">Your ESA minimum is close to or above the common law estimate — this is uncommon. Consult a lawyer to verify your exact entitlements.</div>`;
-    return;
-  }
+// ── Recalculate ───────────────────────────────────────────────────────────────
+document.getElementById('recalcBtn').addEventListener('click', () => {
+  resultsEl.classList.add('hidden');
+  wizardSection.classList.remove('hidden');
+  document.getElementById('wizardProgress').classList.remove('hidden');
+  // Reset form
+  document.querySelectorAll('input[type="radio"]').forEach(r => r.checked = false);
+  document.getElementById('province').value = '';
+  document.getElementById('salary').value = '';
+  document.getElementById('notTerminatedMsg').classList.add('hidden');
+  showStep(1);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
 
-  const multLow  = esaTotal > 0 ? (clMin / esaTotal).toFixed(1) : '—';
-  const multHigh = esaTotal > 0 ? (clMax / esaTotal).toFixed(1) : '—';
-
-  el.innerHTML = `
-    <div class="gap-highlight">
-      <div class="gap-label">Amount potentially left on the table:</div>
-      <div class="gap-amount">${formatCAD(gapMin)} – ${formatCAD(gapMax)}</div>
-    </div>
-    ${row("ESA offer (employer's legal minimum)", formatCAD(esaTotal))}
-    ${row('Common law entitlement (negotiable)', `${formatCAD(clMin)} – ${formatCAD(clMax)}`)}
-    ${row('Common law is', `${multLow}× to ${multHigh}× the ESA minimum`)}`;
-}
-
-// ── Main handler ────────────────────────────────────────────────────────────
-form.addEventListener('submit', function (e) {
-  e.preventDefault();
-
-  const province = document.getElementById('province').value;
-  const years    = parseFloat(document.getElementById('years').value);
-  const age      = parseInt(document.getElementById('age').value, 10);
-  const salary   = parseFloat(document.getElementById('salary').value);
-  const position = document.querySelector('input[name="position"]:checked')?.value;
-
-  const err = validate(province, years, age, salary, position);
-  if (err) {
-    formErrEl.textContent = err;
-    formErrEl.classList.remove('hidden');
-    return;
-  }
-  formErrEl.classList.add('hidden');
+// ── Calculation ───────────────────────────────────────────────────────────────
+function calculate() {
+  const province  = document.getElementById('province').value;
+  const years     = parseFloat(getRadio('yearsRange'));
+  const age       = parseInt(getRadio('ageRange'), 10);
+  const position  = getRadio('jobType');
+  const salary    = parseFloat(document.getElementById('salary').value);
 
   const prov      = ESA_DATA[province];
   const weekly    = salary / 52;
@@ -133,21 +153,95 @@ form.addEventListener('submit', function (e) {
   const clRange   = getCommonLawRange(position, years, age);
   const clMin     = clRange.min * monthly;
   const clMax     = clRange.max * monthly;
-
-  const gapMin = Math.max(0, clMin - esaTotal);
-  const gapMax = Math.max(0, clMax - esaTotal);
+  const gapMin    = Math.max(0, clMin - esaTotal);
+  const gapMax    = Math.max(0, clMax - esaTotal);
 
   renderESA(prov, termWeeks, termAmt, sevWeeks, sevAmt);
   renderCL(clRange, clMin, clMax);
   renderGap(gapMin, gapMax, esaTotal, clMin, clMax);
 
-  calcCard.classList.add('hidden');
+  wizardSection.classList.add('hidden');
+  document.getElementById('wizardProgress').classList.add('hidden');
   resultsEl.classList.remove('hidden');
   window.scrollTo({ top: 0, behavior: 'smooth' });
-});
+}
 
-document.getElementById('recalcBtn').addEventListener('click', function () {
-  resultsEl.classList.add('hidden');
-  calcCard.classList.remove('hidden');
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-});
+// ── Render helpers ────────────────────────────────────────────────────────────
+function formatCAD(n) {
+  return new Intl.NumberFormat('en-CA', {
+    style: 'currency', currency: 'CAD', maximumFractionDigits: 0,
+  }).format(n);
+}
+
+function row(label, value) {
+  return `<div class="result-row">
+    <span class="result-label">${label}</span>
+    <span class="result-value">${value}</span>
+  </div>`;
+}
+
+function renderESA(prov, termWeeks, termAmt, sevWeeks, sevAmt) {
+  const el = document.getElementById('esaContent');
+  if (termWeeks === 0) {
+    el.innerHTML = `<div class="result-note warning">⚠️ Based on your employment length, you may not yet qualify for termination pay under ${prov.name}'s ESA (minimum service: ${prov.minServiceMonths} months). Common law may still apply — consult a lawyer.</div>`;
+    return;
+  }
+  let html = row('Province / Act', prov.name);
+  html += row('Termination Pay', `${termWeeks} week${termWeeks !== 1 ? 's' : ''} &nbsp;<strong>${formatCAD(termAmt)}</strong>`);
+  if (sevWeeks > 0) {
+    html += row('+ Severance Pay <span class="tag">Ontario</span>', `${sevWeeks} weeks &nbsp;<strong>${formatCAD(sevAmt)}</strong>`);
+  }
+  html += `<div class="result-row result-total">
+    <span class="result-label">ESA Total</span>
+    <span class="result-value">${formatCAD(termAmt + sevAmt)}</span>
+  </div>`;
+  if (prov.severanceNote) html += `<div class="result-note">* ${prov.severanceNote}</div>`;
+  if (prov.note)          html += `<div class="result-note">${prov.note}</div>`;
+  el.innerHTML = html;
+}
+
+function renderCL(clRange, clMin, clMax) {
+  const el = document.getElementById('clContent');
+  el.innerHTML = `
+    <div class="cl-big">
+      <div class="cl-big-months">${clRange.min} to ${clRange.max} months notice</div>
+      <div class="cl-big-value">${formatCAD(clMin)} – ${formatCAD(clMax)}</div>
+    </div>
+    ${row('Lower estimate', `${clRange.min} months &nbsp;<strong>${formatCAD(clMin)}</strong>`)}
+    ${row('Upper estimate', `${clRange.max} months &nbsp;<strong>${formatCAD(clMax)}</strong>`)}
+    <div class="result-note">Based on Bardal factors from Canadian case law. Older employees and specialized roles tend toward the upper end. Ontario courts have been awarding significantly higher amounts in recent years (+51% avg. since 2021).</div>`;
+}
+
+function renderGap(gapMin, gapMax, esaTotal, clMin, clMax) {
+  const el = document.getElementById('gapContent');
+  if (gapMax <= 0) {
+    el.innerHTML = `<div class="result-note">Your ESA minimum is close to the common law estimate — this is uncommon. Consult a lawyer to verify your exact entitlements.</div>`;
+    return;
+  }
+  const multLow  = esaTotal > 0 ? (clMin / esaTotal).toFixed(1) : '—';
+  const multHigh = esaTotal > 0 ? (clMax / esaTotal).toFixed(1) : '—';
+  el.innerHTML = `
+    <div class="gap-big">
+      <div class="gap-big-label">Amount potentially left on the table:</div>
+      <div class="gap-big-amount">${formatCAD(gapMin)} – ${formatCAD(gapMax)}</div>
+    </div>
+    ${row("ESA offer (employer's legal minimum)", formatCAD(esaTotal))}
+    ${row('Common law entitlement (negotiable)', `${formatCAD(clMin)} – ${formatCAD(clMax)}`)}
+    ${row('Common law is', `${multLow}× to ${multHigh}× the ESA minimum`)}`;
+}
+
+// ── Utilities ─────────────────────────────────────────────────────────────────
+function getRadio(name) {
+  return document.querySelector(`input[name="${name}"]:checked`)?.value || null;
+}
+function showError(msg) {
+  stepError.textContent = msg;
+  stepError.classList.remove('hidden');
+}
+function clearError() {
+  stepError.classList.add('hidden');
+  stepError.textContent = '';
+}
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+showStep(1);
