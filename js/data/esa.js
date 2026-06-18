@@ -167,6 +167,57 @@ const ESA_DATA = {
     getSeveranceWeeks() { return 0; },
   },
 
+  yukon: {
+    name: "Yukon",
+    act: "Employment Standards Act (RSY 2002, c 72)",
+    source: "https://yukon.ca/en/doing-business/employer-responsibilities/understand-employment-standards",
+    minServiceMonths: 6,
+    getTerminationWeeks(years) {
+      if (years < 0.5) return 0;
+      if (years < 1)   return 1;
+      if (years < 3)   return 2;
+      if (years < 5)   return 3;
+      if (years < 10)  return 4;
+      return 6;
+    },
+    getSeveranceWeeks() { return 0; },
+    note: "Yukon minimum notice is based on length of service. Common law entitlements often significantly exceed the statutory minimum.",
+  },
+
+  northwest_territories: {
+    name: "Northwest Territories",
+    act: "Employment Standards Act (SNWT 2007, c 13)",
+    source: "https://www.justice.gov.nt.ca/en/legislation/employment-standards/",
+    minServiceMonths: 3,
+    getTerminationWeeks(years) {
+      if (years < 90 / 365) return 0;
+      if (years < 1)  return 1;
+      if (years < 3)  return 2;
+      if (years < 5)  return 3;
+      if (years < 10) return 4;
+      return 6;
+    },
+    getSeveranceWeeks() { return 0; },
+    note: "Northwest Territories termination notice scales with length of service. Consult official sources for most current tables.",
+  },
+
+  nunavut: {
+    name: "Nunavut",
+    act: "Labour Standards Act (RSNWT 1988, as adopted by Nunavut)",
+    source: "https://nu-lsco.ca/",
+    minServiceMonths: 1,
+    getTerminationWeeks(years) {
+      if (years < 30 / 365) return 0;
+      if (years < 1)  return 1;
+      if (years < 3)  return 2;
+      if (years < 5)  return 3;
+      if (years < 10) return 4;
+      return 6;
+    },
+    getSeveranceWeeks() { return 0; },
+    note: "Nunavut labour standards are administered by the Labour Standards Office of Nunavut. Verify current tables at nu-lsco.ca.",
+  },
+
   federal: {
     name: "Federal Employee (Canada Labour Code)",
     act: "Canada Labour Code (RSC 1985), Part III",
